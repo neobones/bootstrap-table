@@ -26,7 +26,8 @@
         exportDataType: 'basic', // basic, all, selected
         // 'json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'powerpoint', 'pdf'
         exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel'],
-        exportOptions: {}
+        exportOptions: {},
+        exportHiddenColumns: []
     });
 
     $.extend($.fn.bootstrapTable.defaults.icons, {
@@ -99,6 +100,12 @@
                             }));
                         };
 
+                    if (exportHiddenColumns != null) {
+                        $.each(exportHiddenColumns, function (index, value) {
+                            that.showColumn(value);
+                        });
+                    }
+
                     if (that.options.exportDataType === 'all' && that.options.pagination) {
                         that.$el.one(that.options.sidePagination === 'server' ? 'post-body.bs.table' : 'page-change.bs.table', function () {
                             doExport();
@@ -123,6 +130,12 @@
                         that.load(data);
                     } else {
                         doExport();
+                    }
+
+                    if (exportHiddenColumns != null) {
+                        $.each(exportHiddenColumns, function (index, value) {
+                            that.hideColumn(value);
+                        });
                     }
                 });
             }
